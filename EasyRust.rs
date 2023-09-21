@@ -1,11 +1,20 @@
 use reqwest;
 use std::fs;
 use std::fs::File;
+use std::thread;
+use std::time::Duration;
 use std::io::{self, Read, Write};
 
 pub async fn webget(variable: &str) -> Result<String, reqwest::Error> {
     let body = reqwest::get(variable).await?.text().await?;
     Ok(body)
+}
+
+pub async fn webpost(variable: &str, variable2: &str) -> Result<String, reqwest::Error> {
+    let client = reqwest::Client::new();
+    let res = client.post(variable).body(variable2).send().await?;
+    let res0 = res as String;
+    Ok(res0)
 }
 
 pub fn write(variable1: &str, variable2: &str) -> io::Result<()> {
@@ -21,13 +30,6 @@ pub fn read(variable: &str) -> io::Result<String> {
     Ok(contents)
 }
 
-pub async fn webpost(variable: &str, variable2: &str) -> Result<String, reqwest::Error> {
-    let client = reqwest::Client::new();
-    let res = client.post(variable).body(variable2).send().await?;
-    let res0 = res as String;
-    Ok(res0)
-}
-
 pub async fn delete(file: String) -> std::io::Result<()> {
     fs::remove_file(file)?;
     ok(())
@@ -41,4 +43,8 @@ pub fn breakonint(variable: i128) {
             break
         }
     }
+}
+
+pub fn sleep(variable: i128) {
+    thread::sleep(Duration::from_seconds(variable));
 }

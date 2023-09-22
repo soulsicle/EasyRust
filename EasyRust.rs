@@ -46,5 +46,6 @@ pub fn breakonint(variable: i128) {
 }
 // sleep function
 pub fn sleep(variable: i128) {
-    thread::sleep(Duration::from_seconds(variable));
+    let var = variable*1000;
+    thread::sleep(Duration::from_millis(var));
 }
